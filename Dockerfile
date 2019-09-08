@@ -1,3 +1,9 @@
+FROM alpine
+RUN pwd
+RUN ls
+Run hostname
+COPY app
+
 FROM maven:3.5-jdk-8-alpine
 RUN ls
 WORKDIR /app
