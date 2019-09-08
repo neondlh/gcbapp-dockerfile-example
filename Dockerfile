@@ -1,8 +1,10 @@
 FROM alpine
 RUN pwd
 RUN ls
-Run hostname
-COPY app /app
+COPY -R app /app
+RUN cd app
+RUN pwd
+RUN ls
 
 FROM maven:3.5-jdk-8-alpine
 RUN ls
