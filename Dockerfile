@@ -1,18 +1,15 @@
-FROM alpine
-RUN pwd
-RUN ls
-COPY -R app /app
-RUN cd app
-RUN pwd
-RUN ls
+#
+# Build stage
+#
+FROM maven:3.6.0-jdk-11-slim AS build
+COPY app/src /home/app/src
+COPY app/src/pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
 
-FROM maven:3.5-jdk-8-alpine
-RUN ls
-WORKDIR /app
-RUN pwd
-RUN mvn install
-FROM openjdk:8-jre-alpine
-RUN pwd
-WORKDIR /app
-COPY --from=1 /app/target/gs-spring-boot-0.1.0.jar /app
-CMD ["java -jar gs-spring-boot-0.1.0.jar"]
+#
+# Package stage
+#
+FROM openjdk:11-jre-slim
+COPY --from=build /home/app/target/gs-spring-boot-0.1.0.jar /usr/local/lib/demo.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]
