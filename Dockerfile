@@ -1,4 +1,7 @@
-FROM alpine
-COPY helloworld.sh /
-RUN chmod +x helloworld.sh
-CMD ["/helloworld.sh"]
+FROM maven:3.5-jdk-8-alpine
+WORKDIR /app
+RUN mvn install
+FROM openjdk:8-jre-alpine
+WORKDIR /app
+COPY --from=1 /app/target/gs-spring-boot-0.1.0.jar /app
+CMD ["java -jar gs-spring-boot-0.1.0.jar"]
