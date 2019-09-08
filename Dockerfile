@@ -1,5 +1,7 @@
 FROM maven:3.5-jdk-8-alpine
+RUN pwd
 WORKDIR /app
+RUN pwd
 RUN mvn install
 FROM openjdk:8-jre-alpine
 RUN pwd
